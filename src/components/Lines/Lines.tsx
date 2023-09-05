@@ -19,16 +19,8 @@ const Lines = () => {
             <mesh position-z={index * 0.095}>
               <boxGeometry args={[5, 1, 1, 32, 1, 1]} />
               <shaderMaterial
-                vertexShader={`
-                  void main() {
-                    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
-                  }
-                `}
-                fragmentShader={`
-                  void main() {
-                    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-                  }
-                `}
+                vertexShader={lineVertexShader}
+                fragmentShader={lineFragmentShader}
                 wireframe
               />
             </mesh>
