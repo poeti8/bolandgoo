@@ -9,6 +9,8 @@ const Scene = () => {
 
       <OrbitControls />
 
+      <fogExp2 attach="fog" color="#021119" density={0.035} />
+
       <Lines />
     </>
   );
