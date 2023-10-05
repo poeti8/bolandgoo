@@ -1,18 +1,18 @@
 @font-face {
   font-family: "Tahrir";
-  src: url("assets/TahrirRegular.woff2") format("woff2");
+  src: url("/assets/TahrirRegular.woff2") format("woff2");
   font-weight: 400;
 }
 
 @font-face {
   font-family: "Tahrir";
-  src: url("assets/TahrirBold.woff2") format("woff2");
+  src: url("/assets/TahrirBold.woff2") format("woff2");
   font-weight: 700;
 }
 
 @font-face {
   font-family: "Tahrir";
-  src: url("assets/TahrirBlack.woff2") format("woff2");
+  src: url("/assets/TahrirBlack.woff2") format("woff2");
   font-weight: 800;
 }
 
@@ -143,6 +143,7 @@ main h1 {
   margin: 0;
   padding: 0;
   font-weight: 800;
+  opacity: 0;
 }
 
 main h2 {
@@ -151,6 +152,7 @@ main h2 {
   margin: 0;
   padding: 0;
   font-weight: 700;
+  opacity: 0;
 }
 
 main p {
@@ -162,12 +164,10 @@ main p {
 
 img#magazine {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* TODO: do with js */
-  display: inline-block;
+  display: block;
   width: 400px;
   height: auto;
+  opacity: 0;
   transform: box-shadow 0.3s ease-out;
   box-shadow: 1.2px 6.7px 4.5px rgba(0, 0, 0, 0.074),
     3px 17.2px 12.4px rgba(0, 0, 0, 0.089),

@@ -1,18 +1,31 @@
-import magazinePath from "../../assets/magazine.webp";
 import { useEffect, useMemo, useRef } from "react";
-import gsap from "gsap";
 import { useWindowSize } from "@uidotdev/usehooks";
+import gsap from "gsap";
+
+import magazinePath from "../../assets/magazine.webp";
+import useStore from "../../store";
 
 const IntroPage = () => {
+  const isImagePositioned = useStore((store) => store.isImagePositioned);
+  const setIsImagePositioned = useStore((store) => store.setIsImagePositioned);
+  const isIntroAnimationComplete = useStore(
+    (store) => store.isIntroAnimationComplete
+  );
+  const setIsIntroAnimationComplete = useStore(
+    (store) => store.setIsIntroAnimationComplete
+  );
+  const windowSize = useWindowSize();
+
   const magazineImageRef = useRef<HTMLImageElement>(null);
   const titleRightRef = useRef<HTMLHeadingElement>(null);
   const titleLeftRef = useRef<HTMLHeadingElement>(null);
-  const windowSize = useWindowSize();
+  const subtitleRef = useRef<HTMLHeadingElement>(null);
 
   const handleMoveWithMouseAnimation = useMemo(
     () => (e: MouseEvent) => {
       const magazineImage = magazineImageRef.current;
       if (!magazineImage) return;
+      if (!isIntroAnimationComplete) return;
 
       const boundingRect = magazineImage.getBoundingClientRect();
 
@@ -35,8 +48,86 @@ const IntroPage = () => {
         transformStyle: "preserve-3d",
       });
     },
-    []
+    [isIntroAnimationComplete]
   );
+
+  const centerImage = useMemo(
+    () => () => {
+      const magazineImage = magazineImageRef.current;
+      if (!magazineImage) {
+        setTimeout(centerImage, 10);
+        return;
+      }
+      const boundingRect = magazineImage.getBoundingClientRect();
+      const imageWidth = boundingRect.width;
+      const imageHeight = boundingRect.height;
+      if (imageWidth < 100 || imageHeight < 100) {
+        setTimeout(centerImage, 100);
+        return;
+      }
+
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+
+      magazineImage.style.left = windowWidth / 2 - imageWidth / 2 + "px";
+      magazineImage.style.top = windowHeight / 2 - imageHeight / 2 + "px";
+
+      setIsImagePositioned(true);
+    },
+    [setIsImagePositioned]
+  );
+
+  useEffect(() => {
+    centerImage();
+  }, [centerImage, windowSize.width, windowSize.height]);
+
+  useEffect(() => {
+    if (!isImagePositioned) return;
+    const initialDelay = 2;
+    gsap.set(magazineImageRef.current, {
+      y: "-25%",
+    });
+    gsap.set(titleRightRef.current, {
+      y: "-25%",
+    });
+    gsap.set(titleLeftRef.current, {
+      y: "-25%",
+    });
+    gsap.set(subtitleRef.current, {
+      y: "-25%",
+    });
+    gsap.to(magazineImageRef.current, {
+      y: 0,
+      opacity: 1,
+      duration: 1.5,
+      ease: "power1.out",
+      delay: initialDelay,
+      onComplete: () => {
+        setIsIntroAnimationComplete(true);
+      },
+    });
+    gsap.to(titleRightRef.current, {
+      y: 0,
+      opacity: 1,
+      duration: 1.5,
+      ease: "power1.out",
+      delay: 1 + initialDelay,
+    });
+    gsap.to(titleLeftRef.current, {
+      y: 0,
+      opacity: 1,
+      duration: 1.5,
+      ease: "power1.out",
+      delay: 1 + initialDelay,
+    });
+    gsap.to(subtitleRef.current, {
+      y: 0,
+      opacity: 1,
+      duration: 1.5,
+      ease: "power1.out",
+      delay: 1.5 + initialDelay,
+    });
+  }, [isImagePositioned]);
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMoveWithMouseAnimation);
@@ -93,7 +184,7 @@ const IntroPage = () => {
           <h1 ref={titleRightRef}>مجلـ</h1>
           <h1 ref={titleLeftRef}>ـه</h1>
         </div>
-        <h2>مستقــل موسیقــی</h2>
+        <h2 ref={subtitleRef}>مستقــل موسیقــی</h2>
       </div>
       <a href="#">
         <img ref={magazineImageRef} id="magazine" src={magazinePath} />

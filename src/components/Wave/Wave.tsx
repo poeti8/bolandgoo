@@ -1,19 +1,27 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useWindowSize } from "@uidotdev/usehooks";
-import { useControls } from "leva";
 import { useEffect, useMemo, useRef } from "react";
+import { useWindowSize } from "@uidotdev/usehooks";
 import { createNoise2D } from "simplex-noise";
+import { useControls } from "leva";
 import * as THREE from "three";
 import gsap from "gsap";
+
+import useStore from "../../store";
 
 const noise2D = createNoise2D(() => 0.5);
 
 const geometry = new THREE.BoxGeometry(0.005, 0.1, 0.005);
 
 const Wave = () => {
-  const rectanglesRef = useRef<THREE.Group>(null);
+  const isImagePositioned = useStore((store) => store.isImagePositioned);
+  const isIntroAnimationComplete = useStore(
+    (store) => store.isIntroAnimationComplete
+  );
   const fogExp = useThree((three) => three.scene.fog);
+  const camera = useThree((three) => three.camera);
   const windowSize = useWindowSize();
+
+  const rectanglesRef = useRef<THREE.Group>(null);
 
   const [controls, setControls] = useControls("wave", () => ({
     r: { value: 2.4, min: -10, max: 10, step: 0.01 },
@@ -74,14 +82,36 @@ const Wave = () => {
     rects.rotation.x = THREE.MathUtils.lerp(rects.rotation.x, rotationX, 0.1);
     rects.rotation.z = THREE.MathUtils.lerp(rects.rotation.z, rotationZ, 0.1);
 
-    // if (windowSize.width && windowSize.width < 1200) {
-    //   const magazineImage = document.getElementById("magazine");
-    //   const float = Math.cos(elapsedTime) * 10;
-    //   if (magazineImage) {
-    //     gsap.to(magazineImage, { y: float });
-    //   }
-    // }
+    if (
+      windowSize.width &&
+      windowSize.width < 1200 &&
+      isIntroAnimationComplete
+    ) {
+      const magazineImage = document.getElementById("magazine");
+      const float = Math.cos(elapsedTime) * 10;
+      if (magazineImage) {
+        gsap.to(magazineImage, { y: float });
+      }
+    }
   });
+
+  useEffect(() => {
+    const rects = rectanglesRef.current;
+    if (!rects) return;
+    if (!isImagePositioned) return;
+    gsap.from(camera.rotation, {
+      y: Math.PI / 3,
+      duration: 3,
+      ease: "power1.out",
+    });
+    gsap.from(camera.position, {
+      z: -1,
+      y: 1,
+      x: -1,
+      duration: 3,
+      ease: "power1.out",
+    });
+  }, [isImagePositioned, camera.rotation, camera.position]);
 
   useEffect(() => {
     const windowWidth = windowSize.width ?? 0;

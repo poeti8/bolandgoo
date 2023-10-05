@@ -31,7 +31,7 @@ const App = () => {
                 <a href="#about">درباره</a>
               </li>
               <li>
-                <a href="#contact">تماس</a>
+                <a href="#contact">سفارش</a>
               </li>
               <li>
                 <a href="https://spotify.com" target="_blank">

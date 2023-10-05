@@ -21,22 +21,14 @@ const Lines = () => {
     na: { value: 0.1, step: 0.01, min: -2, max: 2 },
   });
   const [_, setControls] = useControls(() => ({
-    camera: { value: new THREE.Vector3() },
-    rotation: { value: new THREE.Vector3() },
+    camera: { value: { x: 0, y: 0, z: 0 } },
+    rotation: { value: { x: 0, y: 0, z: 0 } },
   }));
 
   const linesRef = useRef<THREE.Group>(null!);
   const rows = useMemo(() => controls.rows, [controls.rows]);
   const cols = useMemo(() => controls.cols, [controls.cols]);
   const list = useMemo(() => {
-    // const grid = [];
-    // for (let i = 0; i < rows; i++) {
-    //   grid[i] = [];
-    //   for (let j = 0; j < cols; j++) {
-    //     grid[j][j]= null;
-    //   }
-    // }
-    // return grid;
     return [...new Array(rows * cols)];
   }, [rows, cols]);
   const lines = useMemo(() => {
@@ -46,6 +38,7 @@ const Lines = () => {
       const n = noise3D(col * 0.002, row * 0.002, 0);
       return (
         <line
+          // @ts-ignore
           geometry={geometry}
           position={[col * 0.03, row * 0.03, 0]}
           rotation={[0, 0, n * 180]}
@@ -59,7 +52,6 @@ const Lines = () => {
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
-    const timeDelta = state.clock.getDelta();
     if (!linesRef.current) return;
 
     linesRef.current.children.forEach((line, index) => {
