@@ -1,9 +1,33 @@
+@font-face {
+  font-family: "Tahrir";
+  src: url("assets/TahrirRegular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Tahrir";
+  src: url("assets/TahrirBold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Tahrir";
+  src: url("assets/TahrirBlack.woff2") format("woff2");
+  font-weight: 800;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
+  font-family: "Tahrir";
   padding: 0;
   margin: 0;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  color: #444;
 }
 
 #root {
@@ -11,4 +35,223 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+#content {
+  /* position: relative; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  padding: 1.5rem 6rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#logo img {
+  width: 72px;
+  height: auto;
+}
+
+header nav {
+  display: flex;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li {
+  display: flex;
+  list-style: none;
+  margin-right: 2.5rem;
+  font-size: 19px;
+}
+
+header nav ul li a {
+  position: relative;
+  color: #444;
+  text-decoration: none;
+  transition: color 0.2s ease-out;
+}
+
+header nav ul li a:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 100%;
+  height: 2px;
+  background-color: #444;
+  transition: transform 0.2s ease-out;
+}
+
+header nav ul li a:hover {
+  color: #000;
+}
+
+header nav ul li a:hover:after {
+  transform: scaleX(0);
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  align-items: start;
+  padding: 10rem 6rem;
+}
+
+main .title-wrapper {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 6rem;
+}
+
+main .main-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+main h1 {
+  color: #333;
+  font-size: 160px;
+  margin: 0;
+  padding: 0;
+  font-weight: 800;
+}
+
+main h2 {
+  color: #333;
+  font-size: 32px;
+  margin: 0;
+  padding: 0;
+  font-weight: 700;
+}
+
+main p {
+  color: #444;
+  font-size: 18px;
+  width: 400px;
+  font-weight: 400;
+}
+
+img#magazine {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* TODO: do with js */
+  display: inline-block;
+  width: 400px;
+  height: auto;
+  transform: box-shadow 0.3s ease-out;
+  box-shadow: 1.2px 6.7px 4.5px rgba(0, 0, 0, 0.074),
+    3px 17.2px 12.4px rgba(0, 0, 0, 0.089),
+    6.8px 38.5px 29.8px rgba(0, 0, 0, 0.102),
+    21px 119px 99px rgba(0, 0, 0, 0.16);
+}
+
+@media only screen and (max-width: 1500px) {
+  header {
+    padding: 1.5rem 5rem;
+  }
+  main .title-wrapper {
+    padding: 0 5rem;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  header {
+    padding: 1rem 4rem;
+  }
+  main .title-wrapper {
+    padding: 0 4rem;
+  }
+  main h1 {
+    font-size: 130px;
+  }
+  main h2 {
+    font-size: 28px;
+  }
+  img#magazine {
+    width: 350px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  header {
+    padding: 1rem 2.5rem;
+  }
+  header nav ul li {
+    margin-right: 1.5rem;
+    font-size: 17px;
+  }
+  header nav ul li a:after {
+    top: 8px;
+    height: 1px;
+  }
+  main .title-wrapper {
+    padding: 0 2.5rem;
+  }
+  main h1 {
+    font-size: 90px;
+  }
+  main h2 {
+    font-size: 22px;
+  }
+  #logo img {
+    width: 64px;
+  }
+  img#magazine {
+    width: 300px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  header {
+    padding: 1.5rem 1rem;
+  }
+  main .title-wrapper {
+    padding: 0 1rem;
+  }
+  header nav ul li {
+    margin-right: 1.25rem;
+    font-size: 14px;
+  }
+  main h1 {
+    font-size: 44px;
+  }
+  main h2 {
+    font-size: 13px;
+  }
+  #logo img {
+    width: 50px;
+  }
+  img#magazine {
+    width: 220px;
+  }
 }

@@ -1,17 +1,27 @@
 import { OrbitControls } from "@react-three/drei";
 
-import Lines from "../Lines";
+import Wave from "../Wave";
+import { useControls } from "leva";
+import { useWindowSize } from "@uidotdev/usehooks";
+import { useEffect } from "react";
 
 const Scene = () => {
+  const controls = useControls({ orbitControl: { value: false } });
+  const windowSize = useWindowSize();
+
+  useEffect(() => {
+    windowSize;
+  }, [windowSize.width]);
+
   return (
     <>
-      <color args={["#021119"]} attach="background" />
+      <color args={["#f7f7f7"]} attach="background" />
 
-      <OrbitControls />
+      <OrbitControls enabled={controls.orbitControl} />
 
-      <fogExp2 attach="fog" color="#021119" density={0.035} />
+      <fogExp2 attach="fog" color="#f7f7f7" density={0.25} />
 
-      <Lines />
+      <Wave />
     </>
   );
 };
