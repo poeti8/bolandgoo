@@ -71,7 +71,7 @@ const IntroPage = () => {
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
 
-      magazineImage.style.left = windowWidth / 2.9 - imageWidth / 2 + "px";
+      magazineImage.style.left = windowWidth / 2 - imageWidth / 2 + "px";
       magazineImage.style.top = windowHeight / 2 - imageHeight / 2 + "px";
 
       setIsImagePositioned(true);
@@ -208,13 +208,10 @@ const IntroPage = () => {
           break;
       }
 
-      const stretchAmountLeft = stretchAmount - Math.floor(stretchAmount / 2);
-      const stretchAmountRight = stretchAmount + Math.floor(stretchAmount / 2);
-
       titleRight.textContent =
-        "مجلـ" + [...new Array(stretchAmountRight).fill("ـ")].join("");
+        "مجلـ" + [...new Array(stretchAmount).fill("ـ")].join("");
       titleLeft.textContent =
-        [...new Array(stretchAmountLeft).fill("ـ")].join("") + "ـه";
+        [...new Array(stretchAmount).fill("ـ")].join("") + "ـه";
     },
     [windowSize.width]
   );
@@ -244,16 +241,9 @@ const IntroPage = () => {
           <h1 ref={titleRightRef}>مجلـ</h1>
           <h1 ref={titleLeftRef}>ـه</h1>
         </div>
-        {/* <h2 ref={subtitleRef}>مستقــل موسیقــی</h2> */}
-        <p className="description">
-          مستقل موسیقی{" "}
-          <u>
-            <b>بلندگو</b>
-          </u>{" "}
-          با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
-          چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و
-          برای شرایط فعلی تکنولوژی
-        </p>
+        <h2 ref={subtitleRef}>
+          مستقــل موسیقی <span>بلندگو</span>
+        </h2>
       </div>
       <a href="#">
         <img

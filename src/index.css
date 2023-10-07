@@ -148,19 +148,21 @@ main h1 {
 
 main h2 {
   color: #333;
-  font-size: 32px;
+  font-size: 26px;
   margin: 0;
   padding: 0;
-  font-weight: 700;
+  font-weight: 400;
   opacity: 0;
 }
 
-.description {
-  width: 45%;
-  padding: 0;
-  margin: 0;
+main h2 span {
+  font-weight: 700;
+}
+
+main p {
   color: #444;
-  font-size: 24px;
+  font-size: 18px;
+  width: 400px;
   font-weight: 400;
 }
 
@@ -282,28 +284,27 @@ img#magazine {
   }
   main .title-wrapper {
     padding: 0 1rem;
+    margin-top: -25px;
   }
   header nav ul li {
     margin-right: 1.25rem;
     font-size: 14px;
   }
   main h1 {
-    margin-top: 40px;
     font-size: 44px;
   }
   main h2 {
     font-size: 13px;
   }
-  .description {
-    width: 40%;
-    font-size: 13px;
-    line-height: 1.2;
+  main h2 span {
+    display: block;
+    font-weight: 700;
   }
   #logo img {
     width: 50px;
   }
   img#magazine {
-    width: 180px;
+    width: 220px;
   }
   .explore span {
     font-size: 17px;
