@@ -87,7 +87,7 @@ const Wave = () => {
       windowSize.width < 900 &&
       isIntroAnimationComplete
     ) {
-      const magazineImage = document.getElementById("magazine");
+      const magazineImage = document.getElementById("magazine-image");
       const float = Math.cos(elapsedTime) * 10;
       if (magazineImage) {
         gsap.to(magazineImage, { y: float });
@@ -163,7 +163,7 @@ const Wave = () => {
         nt: 0.15,
       });
     }
-  }, [windowSize.width, setControls, controls]);
+  }, [windowSize.width, setControls, controls, fogExp]);
 
   return <group ref={rectanglesRef}>{rectangles}</group>;
 };

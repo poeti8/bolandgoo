@@ -132,9 +132,11 @@ main .title-wrapper {
 }
 
 main .main-title {
+  position: relative;
   display: flex;
   justify-content: space-between;
   width: 100%;
+  max-width: 100%;
 }
 
 main h1 {
@@ -166,17 +168,41 @@ main p {
   font-weight: 400;
 }
 
-img#magazine {
+svg#rotate {
+  position: absolute;
+  display: none;
+  margin-top: 30px;
+  fill: #444;
+  width: 40px;
+  height: auto;
+}
+
+#magazine-image {
   position: absolute;
   display: block;
   width: 400px;
-  height: auto;
+  height: 565px;
   opacity: 0;
-  transform: box-shadow 0.3s ease-out;
+  overflow: hidden;
+  background-color: transparent;
   box-shadow: 1.2px 6.7px 4.5px rgba(0, 0, 0, 0.074),
     3px 17.2px 12.4px rgba(0, 0, 0, 0.089),
     6.8px 38.5px 29.8px rgba(0, 0, 0, 0.102),
     21px 119px 99px rgba(0, 0, 0, 0.16);
+}
+
+img#magazine-front,
+img#magazine-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+img#magazine-back {
+  opacity: 0;
 }
 
 .explore {
@@ -236,8 +262,9 @@ img#magazine {
   main h2 {
     font-size: 28px;
   }
-  img#magazine {
+  #magazine-image {
     width: 350px;
+    height: 494px;
   }
 }
 
@@ -265,8 +292,9 @@ img#magazine {
   #logo img {
     width: 64px;
   }
-  img#magazine {
+  #magazine-image {
     width: 300px;
+    height: 424px;
   }
 
   .explore span {
@@ -303,8 +331,13 @@ img#magazine {
   #logo img {
     width: 50px;
   }
-  img#magazine {
+  #magazine-image {
     width: 220px;
+    height: 310px;
+  }
+  svg#rotate {
+    margin-top: 30px;
+    width: 26px;
   }
   .explore span {
     font-size: 17px;
