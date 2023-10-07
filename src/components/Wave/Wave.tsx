@@ -84,7 +84,7 @@ const Wave = () => {
 
     if (
       windowSize.width &&
-      windowSize.width < 1200 &&
+      windowSize.width < 900 &&
       isIntroAnimationComplete
     ) {
       const magazineImage = document.getElementById("magazine");

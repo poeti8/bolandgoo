@@ -155,10 +155,12 @@ main h2 {
   opacity: 0;
 }
 
-main p {
+.description {
+  width: 45%;
+  padding: 0;
+  margin: 0;
   color: #444;
-  font-size: 18px;
-  width: 400px;
+  font-size: 24px;
   font-weight: 400;
 }
 
@@ -173,6 +175,41 @@ img#magazine {
     3px 17.2px 12.4px rgba(0, 0, 0, 0.089),
     6.8px 38.5px 29.8px rgba(0, 0, 0, 0.102),
     21px 119px 99px rgba(0, 0, 0, 0.16);
+}
+
+.explore {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.explore a {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-decoration: none;
+  transition: transform 0.5s ease-out;
+}
+
+.explore a:hover {
+  transform: translateY(-3px);
+}
+
+.explore span {
+  color: #444;
+  font-size: 19px;
+  margin-bottom: 0.4rem;
+  opacity: 0;
+}
+
+.explore svg {
+  fill: #575757;
+  width: 15px;
+  height: auto;
+  opacity: 0;
 }
 
 @media only screen and (max-width: 1500px) {
@@ -229,6 +266,14 @@ img#magazine {
   img#magazine {
     width: 300px;
   }
+
+  .explore span {
+    font-size: 18px;
+    margin-bottom: 0.4rem;
+  }
+  .explore svg {
+    width: 14px;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -243,15 +288,28 @@ img#magazine {
     font-size: 14px;
   }
   main h1 {
+    margin-top: 40px;
     font-size: 44px;
   }
   main h2 {
     font-size: 13px;
   }
+  .description {
+    width: 40%;
+    font-size: 13px;
+    line-height: 1.2;
+  }
   #logo img {
     width: 50px;
   }
   img#magazine {
-    width: 220px;
+    width: 180px;
+  }
+  .explore span {
+    font-size: 17px;
+    margin-bottom: 0.4rem;
+  }
+  .explore svg {
+    width: 13px;
   }
 }
