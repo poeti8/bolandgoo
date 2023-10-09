@@ -1,11 +1,16 @@
 import { Canvas } from "@react-three/fiber";
 import { Leva } from "leva";
 
-import logoPath from "./assets/logo.png";
 import Scene from "./components/Scene";
+import Header from "./components/Header";
 import IntroPage from "./components/IntroPage";
+import ContentPage from "./components/ContentPage";
+
+import { usePageScroll } from "./hooks";
 
 const App = () => {
+  usePageScroll();
+
   return (
     <>
       <Canvas
@@ -21,39 +26,9 @@ const App = () => {
       <Leva hidden={!window.location.href.includes("debug")} flat collapsed />
 
       <div id="content">
-        <header>
-          <div id="logo">
-            <img src={logoPath} />
-          </div>
-          <nav>
-            <ul>
-              <li>
-                <a href="#about">درباره</a>
-              </li>
-              <li>
-                <a href="#contact">سفارش</a>
-              </li>
-              <li>
-                <a href="https://spotify.com" target="_blank">
-                  اسپاتیفای
-                </a>
-              </li>
-              <li>
-                <a href="https://instagram.com" target="_blank">
-                  اینستاگرام
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </header>
-        <main>
-          {/* <h1>بلندگو</h1>
-          <p>
-            بلندگو مجله‌ای مستقل برای شکل‌گیری از انواع موسیقی می‌توان گفت که در
-            حال حاضر در مجامع مختلف هنر تلفیقی این که لزوم است.
-          </p> */}
-          <IntroPage />
-        </main>
+        <Header />
+        <IntroPage />
+        <ContentPage />
       </div>
     </>
   );

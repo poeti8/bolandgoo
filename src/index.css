@@ -61,9 +61,19 @@ header {
   align-items: center;
 }
 
-#logo img {
+.logo-wrapper {
+  position: relative;
   width: 72px;
-  height: auto;
+  height: 76px;
+  display: flex;
+}
+
+.logo img {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 header nav {
@@ -87,9 +97,29 @@ header nav ul li {
 
 header nav ul li a {
   position: relative;
+  display: flex;
+  align-items: center;
   color: #444;
   text-decoration: none;
   transition: color 0.2s ease-out;
+}
+
+header.dark nav ul li a {
+  color: #f7f7f7;
+}
+
+header nav ul li a svg {
+  width: 12px;
+  height: auto;
+  margin-right: 6px;
+  fill: #444;
+}
+
+header.dark nav ul li a svg {
+  width: 12px;
+  height: auto;
+  margin-right: 6px;
+  fill: #f7f7f7;
 }
 
 header nav ul li a:after {
@@ -103,15 +133,23 @@ header nav ul li a:after {
   transition: transform 0.2s ease-out;
 }
 
+header.dark nav ul li a:after {
+  background-color: #f7f7f7;
+}
+
 header nav ul li a:hover {
   color: #000;
+}
+
+header.dark nav ul li a:hover {
+  color: #fff;
 }
 
 header nav ul li a:hover:after {
   transform: scaleX(0);
 }
 
-main {
+#intro-section {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -120,7 +158,7 @@ main {
   padding: 10rem 6rem;
 }
 
-main .title-wrapper {
+#intro-section .title-wrapper {
   position: absolute;
   top: 40%;
   left: 0;
@@ -131,7 +169,7 @@ main .title-wrapper {
   padding: 0 6rem;
 }
 
-main .main-title {
+#intro-section .main-title {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -139,7 +177,7 @@ main .main-title {
   max-width: 100%;
 }
 
-main h1 {
+#intro-section h1 {
   color: #333;
   font-size: 160px;
   margin: 0;
@@ -148,7 +186,7 @@ main h1 {
   opacity: 0;
 }
 
-main h2 {
+#intro-section h2 {
   color: #333;
   font-size: 26px;
   margin: 0;
@@ -157,11 +195,11 @@ main h2 {
   opacity: 0;
 }
 
-main h2 span {
+#intro-section h2 span {
   font-weight: 700;
 }
 
-main p {
+#intro-section p {
   color: #444;
   font-size: 18px;
   width: 400px;
@@ -240,11 +278,78 @@ img#magazine-back {
   opacity: 0;
 }
 
+picture#magazine-inside {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 900px;
+  max-width: 90%;
+  height: auto;
+  opacity: 0;
+  visibility: hidden;
+}
+
+picture#magazine-inside img {
+  width: 100%;
+  height: 100%;
+}
+
+#inside-section {
+  padding: 0rem 6rem;
+  display: flex;
+  width: 100%;
+}
+
+#inside-section .table-of-contents {
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  opacity: 0;
+}
+
+#inside-section .table-of-contents h2 {
+  color: #f7f7f7;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+#inside-section .table-of-contents ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #f7f7f7;
+}
+
+#inside-section .table-of-contents ul li {
+  font-size: 20px;
+  margin-bottom: 0.2rem;
+}
+
+#inside-section .table-of-contents ul li .page-number {
+  font-size: 28px;
+  font-weight: 800;
+  padding-left: 0.5rem;
+  line-height: 1;
+}
+
+#inside-section .table-of-contents ul li .author {
+  display: block;
+  font-size: 15px;
+  color: #878787;
+}
+
 @media only screen and (max-width: 1500px) {
   header {
     padding: 1.5rem 5rem;
   }
-  main .title-wrapper {
+  #inside-section {
+    padding: 4rem 5rem;
+  }
+  #intro-section .title-wrapper {
     padding: 0 5rem;
   }
 }
@@ -253,18 +358,33 @@ img#magazine-back {
   header {
     padding: 1rem 4rem;
   }
-  main .title-wrapper {
+  #intro-section .title-wrapper {
     padding: 0 4rem;
   }
-  main h1 {
+  #intro-section h1 {
     font-size: 130px;
   }
-  main h2 {
+  #intro-section h2 {
     font-size: 28px;
   }
   #magazine-image {
     width: 350px;
     height: 494px;
+  }
+  #inside-section {
+    padding: 1rem 4rem;
+  }
+  #inside-section .table-of-contents ul li {
+    font-size: 20px;
+    margin-bottom: 0.2rem;
+  }
+  #inside-section .table-of-contents ul li .page-number {
+    font-size: 28px;
+    padding-left: 0.4rem;
+    line-height: 1;
+  }
+  #inside-section .table-of-contents ul li .author {
+    font-size: 13px;
   }
 }
 
@@ -280,23 +400,23 @@ img#magazine-back {
     top: 8px;
     height: 1px;
   }
-  main .title-wrapper {
+  #intro-section .title-wrapper {
     padding: 0 2.5rem;
   }
-  main h1 {
+  #intro-section h1 {
     font-size: 90px;
   }
-  main h2 {
+  #intro-section h2 {
     font-size: 22px;
   }
-  #logo img {
+  .logo-wrapper {
     width: 64px;
+    height: 60px;
   }
   #magazine-image {
     width: 300px;
     height: 424px;
   }
-
   .explore span {
     font-size: 18px;
     margin-bottom: 0.4rem;
@@ -308,28 +428,33 @@ img#magazine-back {
 
 @media only screen and (max-width: 480px) {
   header {
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 1rem 1rem;
   }
-  main .title-wrapper {
+  #intro-section .title-wrapper {
     padding: 0 1rem;
     margin-top: -25px;
+  }
+  header nav ul li a svg {
+    width: 10px;
+    margin-right: 4px;
   }
   header nav ul li {
     margin-right: 1.25rem;
     font-size: 14px;
   }
-  main h1 {
+  #intro-section h1 {
     font-size: 44px;
   }
-  main h2 {
+  #intro-section h2 {
     font-size: 13px;
   }
-  main h2 span {
+  #intro-section h2 span {
     display: block;
     font-weight: 700;
   }
-  #logo img {
+  .logo-wrapper {
     width: 50px;
+    height: 47px;
   }
   #magazine-image {
     width: 220px;
@@ -345,5 +470,24 @@ img#magazine-back {
   }
   .explore svg {
     width: 13px;
+  }
+  #inside-section {
+    padding: 0rem 1rem;
+  }
+  #inside-section .table-of-contents h2 {
+    font-size: 22px;
+    margin-bottom: 1rem;
+  }
+  #inside-section .table-of-contents ul li {
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+  #inside-section .table-of-contents ul li .page-number {
+    font-size: 16px;
+    padding-left: 0.2rem;
+    line-height: 0.5;
+  }
+  #inside-section .table-of-contents ul li .author {
+    font-size: 10px;
   }
 }

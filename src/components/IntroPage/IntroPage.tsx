@@ -1,23 +1,23 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useWindowSize } from "@uidotdev/usehooks";
 import gsap from "gsap";
 
 import magazineFrontPath from "../../assets/magazine-front.webp";
 import magazineBackPath from "../../assets/magazine-back.webp";
-import useStore from "../../store";
+import useStore, { Page } from "../../store";
 import { Down, Rotate } from "../Icons";
+import {
+  useIntroPageAnimation,
+  useIntroPageTransitionAnimation,
+} from "../../hooks";
 
 const IntroPage = () => {
   const [isDiscoverInsideMoving, setIsDiscoverInsideMoving] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
+  const page = useStore((store) => store.page);
   const isImagePositioned = useStore((store) => store.isImagePositioned);
   const setIsImagePositioned = useStore((store) => store.setIsImagePositioned);
-  const isIntroAnimationComplete = useStore(
-    (store) => store.isIntroAnimationComplete
-  );
-  const setIsIntroAnimationComplete = useStore(
-    (store) => store.setIsIntroAnimationComplete
-  );
+  const isAnimating = useStore((store) => store.isAnimating);
   const windowSize = useWindowSize();
 
   const magazineImageRef = useRef<HTMLAnchorElement>(null);
@@ -28,12 +28,13 @@ const IntroPage = () => {
   const titleLeftRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLHeadingElement>(null);
 
-  const handleMoveWithMouseAnimation = useMemo(
-    () => (e: MouseEvent) => {
+  const handleMoveWithMouseAnimation = useCallback(
+    (e: MouseEvent) => {
       const magazineWrapper = magazineImageRef.current;
       if (!magazineWrapper) return;
-      if (!isIntroAnimationComplete) return;
+      if (isAnimating) return;
       if (isFlipping) return;
+      if (page !== Page.Intro) return;
 
       const boundingRect = magazineWrapper.getBoundingClientRect();
 
@@ -56,43 +57,40 @@ const IntroPage = () => {
         transformStyle: "preserve-3d",
       });
     },
-    [isIntroAnimationComplete, isFlipping]
+    [page, isAnimating, isFlipping]
   );
 
-  const centerImage = useMemo(
-    () => () => {
-      const magazineWrapper = magazineImageRef.current;
-      const rotateIcon = rotateIconRef.current;
-      if (!magazineWrapper || !rotateIcon) {
-        setTimeout(centerImage, 10);
-        return;
-      }
-      const imageBoundingRect = magazineWrapper.getBoundingClientRect();
-      const imageWidth = imageBoundingRect.width;
-      const imageHeight = imageBoundingRect.height;
-      if (imageWidth < 100 || imageHeight < 100) {
-        setTimeout(centerImage, 100);
-        return;
-      }
+  const centerImage = useCallback(() => {
+    const magazineWrapper = magazineImageRef.current;
+    const rotateIcon = rotateIconRef.current;
+    if (!magazineWrapper || !rotateIcon) {
+      setTimeout(centerImage, 10);
+      return;
+    }
+    const imageBoundingRect = magazineWrapper.getBoundingClientRect();
+    const imageWidth = imageBoundingRect.width;
+    const imageHeight = imageBoundingRect.height;
+    if (imageWidth < 100 || imageHeight < 100) {
+      setTimeout(centerImage, 100);
+      return;
+    }
 
-      const windowWidth = window.innerWidth;
-      const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
 
-      magazineWrapper.style.left = windowWidth / 2 - imageWidth / 2 + "px";
-      magazineWrapper.style.top = windowHeight / 2 - imageHeight / 2 + "px";
+    magazineWrapper.style.left = windowWidth / 2 - imageWidth / 2 + "px";
+    magazineWrapper.style.top = windowHeight / 2 - imageHeight / 2 + "px";
 
-      const rotateIconBoundingRect = rotateIcon.getBoundingClientRect();
-      const rotateIconWidth = rotateIconBoundingRect.width;
-      const rotateIconHeight = rotateIconBoundingRect.height;
+    const rotateIconBoundingRect = rotateIcon.getBoundingClientRect();
+    const rotateIconWidth = rotateIconBoundingRect.width;
+    const rotateIconHeight = rotateIconBoundingRect.height;
 
-      rotateIcon.style.left = windowWidth / 2 - rotateIconWidth / 2 + "px";
-      rotateIcon.style.top =
-        windowHeight / 2 - rotateIconHeight / 2 + imageHeight / 2 + "px";
+    rotateIcon.style.left = windowWidth / 2 - rotateIconWidth / 2 + "px";
+    rotateIcon.style.top =
+      windowHeight / 2 - rotateIconHeight / 2 + imageHeight / 2 + "px";
 
-      setIsImagePositioned(true);
-    },
-    [setIsImagePositioned]
-  );
+    setIsImagePositioned(true);
+  }, [setIsImagePositioned]);
 
   useEffect(() => {
     centerImage();
@@ -101,7 +99,8 @@ const IntroPage = () => {
   useEffect(() => {
     if (isDiscoverInsideMoving) return;
     if (!isImagePositioned) return;
-    if (!isIntroAnimationComplete) return;
+    if (isAnimating) return;
+    if (page !== Page.Intro) return;
 
     gsap.to(".explore svg", {
       y: 7,
@@ -112,80 +111,26 @@ const IntroPage = () => {
     });
     setIsDiscoverInsideMoving(true);
   }, [
+    page,
     isDiscoverInsideMoving,
     isImagePositioned,
-    isIntroAnimationComplete,
+    isAnimating,
     windowSize.width,
     windowSize.height,
   ]);
 
-  useEffect(() => {
-    if (!isImagePositioned) return;
-    const initialDelay = 2;
-    gsap.set(magazineImageRef.current, {
-      y: "-25%",
-    });
-    gsap.set(titleRightRef.current, {
-      y: "-25%",
-    });
-    gsap.set(titleLeftRef.current, {
-      y: "-25%",
-    });
-    gsap.set(subtitleRef.current, {
-      y: "-25%",
-    });
-    gsap.set(".explore span", {
-      y: 20,
-    });
-    gsap.set(".explore svg", {
-      y: 20,
-    });
-    gsap.to(magazineImageRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      ease: "power1.out",
-      delay: initialDelay,
-    });
-    gsap.to(titleRightRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      ease: "power1.out",
-      delay: 1 + initialDelay,
-    });
-    gsap.to(titleLeftRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      ease: "power1.out",
-      delay: 1 + initialDelay,
-    });
-    gsap.to(subtitleRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      ease: "power1.out",
-      delay: 1.5 + initialDelay,
-    });
-    gsap.to(".explore span", {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      ease: "power1.out",
-      delay: 1.8 + initialDelay,
-      onComplete: () => {
-        setIsIntroAnimationComplete(true);
-      },
-    });
-    gsap.to(".explore svg", {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      ease: "power1.out",
-      delay: 1.5 + initialDelay,
-    });
-  }, [isImagePositioned, setIsIntroAnimationComplete]);
+  useIntroPageAnimation({
+    magazineImageRef,
+    titleRightRef,
+    titleLeftRef,
+    subtitleRef,
+  });
+  useIntroPageTransitionAnimation({
+    magazineImageRef,
+    titleRightRef,
+    titleLeftRef,
+    subtitleRef,
+  });
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMoveWithMouseAnimation);
@@ -194,124 +139,111 @@ const IntroPage = () => {
     };
   }, [handleMoveWithMouseAnimation]);
 
-  const stretchTitle = useMemo(
-    () => () => {
-      const titleRight = titleRightRef.current;
-      const titleLeft = titleLeftRef.current;
+  const stretchTitle = useCallback(() => {
+    const titleRight = titleRightRef.current;
+    const titleLeft = titleLeftRef.current;
 
-      if (!titleRight || !titleLeft) {
-        return stretchTitle();
-      }
+    if (!titleRight || !titleLeft) {
+      return stretchTitle();
+    }
 
-      const windowWidth = windowSize.width ?? 0;
-      let stretchAmount = 0;
+    const windowWidth = windowSize.width ?? 0;
+    let stretchAmount = 0;
 
-      switch (true) {
-        case windowWidth > 1400:
-          stretchAmount = Math.floor(windowWidth / 53);
-          break;
+    switch (true) {
+      case windowWidth > 1400:
+        stretchAmount = Math.floor(windowWidth / 53);
+        break;
 
-        case windowWidth > 900:
-          stretchAmount = 20;
-          break;
+      case windowWidth > 900:
+        stretchAmount = 20;
+        break;
 
-        case windowWidth > 768:
-          stretchAmount = 15;
-          break;
+      case windowWidth > 768:
+        stretchAmount = 15;
+        break;
 
-        case windowWidth > 468:
-          stretchAmount = Math.floor(windowWidth / 35);
-          break;
+      case windowWidth > 468:
+        stretchAmount = Math.floor(windowWidth / 35);
+        break;
 
-        case windowWidth < 468:
-          stretchAmount = Math.floor(windowWidth / 14);
-          break;
+      case windowWidth < 468:
+        stretchAmount = Math.floor(windowWidth / 14);
+        break;
 
-        default:
-          break;
-      }
+      default:
+        break;
+    }
 
-      titleRight.textContent =
-        "مجلـ" + [...new Array(stretchAmount).fill("ـ")].join("");
-      titleLeft.textContent =
-        [...new Array(stretchAmount).fill("ـ")].join("") + "ـه";
-    },
-    [windowSize.width]
-  );
+    titleRight.textContent =
+      "مجلـ" + [...new Array(stretchAmount).fill("ـ")].join("");
+    titleLeft.textContent =
+      [...new Array(stretchAmount).fill("ـ")].join("") + "ـه";
+  }, [windowSize.width]);
 
   useEffect(() => {
     stretchTitle();
   }, [stretchTitle, windowSize.width, windowSize.height]);
 
-  const handleMouseEnterAnimation = useMemo(
-    () => () => {
-      gsap.to(magazineImageRef.current, {
-        y: "-3%",
-        duration: 0.5,
-        ease: "power1.out",
-      });
-      gsap.to("#rotate", {
-        y: -10,
-        duration: 0.5,
-        ease: "power1.out",
-      });
-    },
-    []
-  );
+  const handleMouseEnterAnimation = useCallback(() => {
+    gsap.to(magazineImageRef.current, {
+      y: "-3%",
+      duration: 0.5,
+      ease: "power1.out",
+    });
+    gsap.to("#rotate", {
+      y: -10,
+      duration: 0.5,
+      ease: "power1.out",
+    });
+  }, []);
 
-  const handleMouseLeaveAnimation = useMemo(
-    () => () => {
-      gsap.to(magazineImageRef.current, {
-        y: 0,
-        duration: 0.5,
-        ease: "power1.out",
-      });
-      gsap.to("#rotate", {
-        y: 0,
-        duration: 0.5,
-        ease: "power1.out",
-      });
-    },
-    []
-  );
+  const handleMouseLeaveAnimation = useCallback(() => {
+    gsap.to(magazineImageRef.current, {
+      y: 0,
+      duration: 0.5,
+      ease: "power1.out",
+    });
+    gsap.to("#rotate", {
+      y: 0,
+      duration: 0.5,
+      ease: "power1.out",
+    });
+  }, []);
 
-  const handleMagazineClick = useMemo(
-    () => (e: any) => {
-      e.preventDefault();
-      setIsFlipping(true);
+  const handleMagazineClick = useCallback((e: any) => {
+    e.preventDefault();
+    setIsFlipping(true);
 
-      const isFrontActive =
-        magazineImageFrontRef.current?.style.opacity !== "0";
+    const isFrontActive = magazineImageFrontRef.current?.style.opacity !== "0";
 
-      gsap.to(magazineImageRef.current, {
-        rotateY: 90,
-        duration: 0.3,
-        scaleX: isFrontActive ? 1.5 : 1,
-        scaleY: isFrontActive ? 1.5 : 1,
-        ease: "power1.out",
-        onComplete: () => {
-          gsap.set(magazineImageFrontRef.current, {
-            opacity: isFrontActive ? 0 : 1,
-          });
-          gsap.set(magazineImageBackRef.current, {
-            opacity: isFrontActive ? 1 : 0,
-          });
-          gsap.to(magazineImageRef.current, {
-            rotateY: 0,
-            duration: 0.3,
-            ease: "power1.in",
-            onComplete: () => {
-              setIsFlipping(false);
-            },
-          });
-        },
-      });
-    },
-    []
-  );
+    gsap.to(magazineImageRef.current, {
+      rotateY: 90,
+      duration: 0.3,
+      scaleX: isFrontActive ? 1.5 : 1,
+      scaleY: isFrontActive ? 1.5 : 1,
+      ease: "power1.out",
+      onComplete: () => {
+        gsap.set(magazineImageFrontRef.current, {
+          opacity: isFrontActive ? 0 : 1,
+        });
+        gsap.set(magazineImageBackRef.current, {
+          opacity: isFrontActive ? 1 : 0,
+        });
+        gsap.to(magazineImageRef.current, {
+          rotateY: 0,
+          duration: 0.3,
+          ease: "power1.in",
+          onComplete: () => {
+            setIsFlipping(false);
+          },
+        });
+      },
+    });
+  }, []);
 
   return (
-    <>
+    <section id="intro-section">
       <div className="title-wrapper">
         <div className="main-title">
           <h1 ref={titleRightRef}>مجلـ</h1>
@@ -345,7 +277,7 @@ const IntroPage = () => {
           <Down />
         </a>
       </div>
-    </>
+    </section>
   );
 };
 

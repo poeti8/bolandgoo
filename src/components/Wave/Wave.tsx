@@ -6,19 +6,17 @@ import { useControls } from "leva";
 import * as THREE from "three";
 import gsap from "gsap";
 
-import useStore from "../../store";
+import useStore, { Page } from "../../store";
+import { useWaveIntroAnimation, useWaveTransitionAnimation } from "../../hooks";
 
 const noise2D = createNoise2D(() => 0.5);
 
 const geometry = new THREE.BoxGeometry(0.005, 0.1, 0.005);
 
 const Wave = () => {
-  const isImagePositioned = useStore((store) => store.isImagePositioned);
-  const isIntroAnimationComplete = useStore(
-    (store) => store.isIntroAnimationComplete
-  );
+  const page = useStore((store) => store.page);
+  const isAnimating = useStore((store) => store.isAnimating);
   const fogExp = useThree((three) => three.scene.fog);
-  const camera = useThree((three) => three.camera);
   const windowSize = useWindowSize();
 
   const rectanglesRef = useRef<THREE.Group>(null);
@@ -85,7 +83,8 @@ const Wave = () => {
     if (
       windowSize.width &&
       windowSize.width < 900 &&
-      isIntroAnimationComplete
+      !isAnimating &&
+      page === Page.Intro
     ) {
       const magazineImage = document.getElementById("magazine-image");
       const float = Math.cos(elapsedTime) * 10;
@@ -95,23 +94,8 @@ const Wave = () => {
     }
   });
 
-  useEffect(() => {
-    const rects = rectanglesRef.current;
-    if (!rects) return;
-    if (!isImagePositioned) return;
-    gsap.from(camera.rotation, {
-      y: Math.PI / 3,
-      duration: 3,
-      ease: "power1.out",
-    });
-    gsap.from(camera.position, {
-      z: -1,
-      y: 1,
-      x: -1,
-      duration: 3,
-      ease: "power1.out",
-    });
-  }, [isImagePositioned, camera.rotation, camera.position]);
+  useWaveIntroAnimation();
+  useWaveTransitionAnimation({ rectanglesRef });
 
   useEffect(() => {
     const windowWidth = windowSize.width ?? 0;
@@ -163,7 +147,7 @@ const Wave = () => {
         nt: 0.15,
       });
     }
-  }, [windowSize.width, setControls, controls, fogExp]);
+  }, [windowSize.width, setControls, fogExp]);
 
   return <group ref={rectanglesRef}>{rectangles}</group>;
 };
