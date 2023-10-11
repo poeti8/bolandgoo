@@ -1,0 +1,823 @@
+@font-face {
+  font-family: "Tahrir";
+  src: url("/assets/TahrirRegular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Tahrir";
+  src: url("/assets/TahrirBold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Tahrir";
+  src: url("/assets/TahrirBlack.woff2") format("woff2");
+  font-weight: 800;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Tahrir";
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  color: #444;
+}
+
+#root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+#content {
+  /* position: relative; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  padding: 1.5rem 6rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-wrapper {
+  position: relative;
+  width: 72px;
+  height: 76px;
+  display: flex;
+  cursor: pointer;
+}
+
+.logo img {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+header nav {
+  display: flex;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li {
+  display: flex;
+  list-style: none;
+  margin-right: 2.5rem;
+  font-size: 19px;
+}
+
+header nav ul li a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: #444;
+  text-decoration: none;
+  transition: color 0.2s ease-out;
+}
+
+header.dark nav ul li a {
+  color: #f7f7f7;
+}
+
+header nav ul li a svg {
+  width: 12px;
+  height: auto;
+  margin-right: 6px;
+  fill: #444;
+}
+
+header.dark nav ul li a svg {
+  width: 12px;
+  height: auto;
+  margin-right: 6px;
+  fill: #f7f7f7;
+}
+
+header nav ul li a:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 100%;
+  height: 2px;
+  background-color: #444;
+  transition: transform 0.2s ease-out;
+}
+
+header.dark nav ul li a:after {
+  background-color: #f7f7f7;
+}
+
+header nav ul li a:hover {
+  color: #000;
+}
+
+header.dark nav ul li a:hover {
+  color: #fff;
+}
+
+header nav ul li a:hover:after {
+  transform: scaleX(0);
+}
+
+#intro-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  align-items: start;
+  padding: 10rem 6rem;
+}
+
+#intro-section .title-wrapper {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 6rem;
+}
+
+#intro-section .main-title {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+}
+
+#intro-section h1 {
+  color: #333;
+  font-size: 160px;
+  margin: 0;
+  padding: 0;
+  font-weight: 800;
+  opacity: 0;
+}
+
+#intro-section h2 {
+  color: #333;
+  font-size: 26px;
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  opacity: 0;
+}
+
+#intro-section h2 span {
+  font-weight: 700;
+}
+
+#intro-section p {
+  color: #444;
+  font-size: 18px;
+  width: 400px;
+  font-weight: 400;
+}
+
+svg#rotate {
+  position: absolute;
+  display: none;
+  margin-top: 30px;
+  fill: #444;
+  width: 40px;
+  height: auto;
+}
+
+#magazine-image {
+  position: absolute;
+  display: block;
+  width: 500px;
+  height: 706px;
+  opacity: 0;
+  overflow: hidden;
+  background-color: transparent;
+  box-shadow: 1.2px 6.7px 4.5px rgba(0, 0, 0, 0.074),
+    3px 17.2px 12.4px rgba(0, 0, 0, 0.089),
+    6.8px 38.5px 29.8px rgba(0, 0, 0, 0.102),
+    21px 119px 99px rgba(0, 0, 0, 0.16);
+}
+
+picture#magazine-front,
+picture#magazine-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+picture#magazine-front img,
+picture#magazine-back img {
+  width: 100%;
+  height: 100%;
+}
+
+picture#magazine-back {
+  opacity: 0;
+}
+
+.explore {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.explore a {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-decoration: none;
+  transition: transform 0.5s ease-out;
+}
+
+.explore a:hover {
+  transform: translateY(-3px);
+}
+
+.explore span {
+  color: #444;
+  font-size: 19px;
+  margin-bottom: 0.4rem;
+  opacity: 0;
+}
+
+.explore svg {
+  fill: #575757;
+  width: 15px;
+  height: auto;
+  opacity: 0;
+}
+
+picture#magazine-inside {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 900px;
+  max-width: 90%;
+  height: auto;
+  opacity: 0;
+  visibility: hidden;
+}
+
+picture#magazine-inside img {
+  width: 100%;
+  height: 100%;
+}
+
+#inside-section {
+  padding: 4rem 6rem;
+  display: flex;
+  width: 100%;
+}
+
+#inside-section .table-of-contents {
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  opacity: 0;
+}
+
+#inside-section .table-of-contents h2 {
+  color: #f7f7f7;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+#inside-section .table-of-contents ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #f7f7f7;
+}
+
+#inside-section .table-of-contents ul li {
+  font-size: 24px;
+  margin-bottom: 0.5rem;
+}
+
+#inside-section .table-of-contents ul li .page-number {
+  font-size: 36px;
+  font-weight: 800;
+  padding-left: 0.7rem;
+  line-height: 1;
+}
+
+#inside-section .table-of-contents ul li .author {
+  display: block;
+  font-size: 17px;
+  color: #878787;
+}
+
+#inside-section .table-of-contents nav {
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+#inside-section .table-of-contents nav a {
+  display: flex;
+  align-items: center;
+  color: #999;
+  font-size: 20px;
+  text-decoration: none;
+  cursor: default;
+}
+
+#inside-section .table-of-contents nav svg {
+  width: 22px;
+  height: auto;
+  fill: #999;
+}
+
+#inside-section .table-of-contents nav .active {
+  color: #f7f7f7;
+  cursor: pointer;
+}
+
+#inside-section .table-of-contents nav .active svg {
+  fill: #f7f7f7;
+}
+
+#inside-section .table-of-contents nav .prev svg {
+  margin-left: 0.2rem;
+  margin-right: -8px;
+}
+
+#inside-section .table-of-contents nav .next {
+  margin-right: 2rem;
+}
+
+#inside-section .table-of-contents nav .next svg {
+  margin-right: 0.1rem;
+}
+
+#order {
+  position: fixed;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  top: -100%;
+  left: 0;
+  background-color: #1a1919;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: #f7f7f7;
+  padding: 2rem;
+}
+
+#order h3 {
+  font-size: 32px;
+}
+
+#order ul {
+  direction: ltr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+#order ul li {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+#order ul li a {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  transition: transform 0.2s ease-out;
+}
+
+#order ul li a:hover {
+  transform: translateX(5%);
+}
+
+#order ul li svg {
+  width: 22px;
+  height: auto;
+  margin-top: -2px;
+  margin-right: 10px;
+}
+
+#order .close {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  bottom: 0;
+  left: 50%;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  font-size: 22px;
+  color: inherit;
+  text-decoration: none;
+  transform: translateX(-50%);
+}
+
+#order .close svg {
+  width: 24px;
+  height: auto;
+  margin-left: 0.25rem;
+}
+
+@media only screen and (max-width: 1500px) {
+  header {
+    padding: 2rem 4rem;
+  }
+  #inside-section {
+    padding: 4rem 4rem;
+  }
+  #intro-section .title-wrapper {
+    padding: 0 4rem;
+  }
+  #inside-section {
+    padding: 1rem 4rem;
+  }
+  picture#magazine-inside {
+    max-width: 90%;
+    width: 830px;
+  }
+  #inside-section .table-of-contents h2 {
+    font-size: 38px;
+    margin-bottom: 2rem;
+  }
+  #inside-section .table-of-contents ul li {
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+  }
+  #inside-section .table-of-contents ul li .page-number {
+    font-size: 32px;
+    padding-left: 0.5rem;
+    line-height: 1;
+  }
+  #inside-section .table-of-contents ul li .author {
+    font-size: 16px;
+  }
+  #inside-section .table-of-contents nav {
+    margin-top: 1.5rem;
+  }
+  #inside-section .table-of-contents nav a {
+    font-size: 19px;
+  }
+  #inside-section .table-of-contents nav svg {
+    width: 22px;
+  }
+  #inside-section .table-of-contents nav .prev svg {
+    margin-left: 0.2rem;
+    margin-right: -8px;
+  }
+  #inside-section .table-of-contents nav .next {
+    margin-right: 1rem;
+  }
+  #inside-section .table-of-contents nav .next svg {
+    margin-right: 0.1rem;
+  }
+}
+
+@media only screen and (max-width: 1430px) {
+  header {
+    padding: 1.5rem 5rem;
+  }
+  #inside-section {
+    padding: 4rem 5rem;
+  }
+  #intro-section .title-wrapper {
+    padding: 0 5rem;
+  }
+  #inside-section {
+    padding: 0rem 5rem;
+  }
+  picture#magazine-inside {
+    max-width: 50%;
+  }
+  #inside-section .table-of-contents h2 {
+    font-size: 34px;
+    margin-bottom: 2rem;
+  }
+  #inside-section .table-of-contents ul li {
+    font-size: 22px;
+    margin-bottom: 0.5rem;
+  }
+  #inside-section .table-of-contents ul li .page-number {
+    font-size: 28px;
+    padding-left: 0.5rem;
+    line-height: 1;
+  }
+  #inside-section .table-of-contents ul li .author {
+    font-size: 16px;
+  }
+  #inside-section .table-of-contents nav {
+    margin-top: 1.5rem;
+  }
+  #inside-section .table-of-contents nav a {
+    font-size: 18px;
+  }
+  #inside-section .table-of-contents nav svg {
+    width: 22px;
+  }
+  #inside-section .table-of-contents nav .prev svg {
+    margin-left: 0.2rem;
+    margin-right: -8px;
+  }
+  #inside-section .table-of-contents nav .next {
+    margin-right: 1rem;
+  }
+  #inside-section .table-of-contents nav .next svg {
+    margin-right: 0.1rem;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  header {
+    padding: 1rem 4rem;
+  }
+  #intro-section .title-wrapper {
+    padding: 0 4rem;
+  }
+  #intro-section h1 {
+    font-size: 130px;
+  }
+  #intro-section h2 {
+    font-size: 28px;
+  }
+  #magazine-image {
+    width: 525px;
+    height: 741px;
+  }
+  #inside-section {
+    padding: 6rem 4rem;
+  }
+  picture#magazine-inside {
+    max-width: 80%;
+  }
+  #inside-section .table-of-contents h2 {
+    font-size: 30px;
+    margin-bottom: 1.5rem;
+  }
+  #inside-section .table-of-contents ul li {
+    font-size: 19px;
+    margin-bottom: 0.5rem;
+  }
+  #inside-section .table-of-contents ul li .page-number {
+    font-size: 26px;
+    padding-left: 0.5rem;
+    line-height: 1;
+  }
+  #inside-section .table-of-contents ul li .author {
+    font-size: 14px;
+  }
+  #inside-section .table-of-contents nav {
+    margin-top: 1rem;
+  }
+  #inside-section .table-of-contents nav a {
+    font-size: 17px;
+  }
+  #inside-section .table-of-contents nav svg {
+    width: 20px;
+  }
+  #inside-section .table-of-contents nav .prev svg {
+    margin-left: 0.1rem;
+    margin-right: -6px;
+  }
+  #inside-section .table-of-contents nav .next {
+    margin-right: 1rem;
+  }
+  #inside-section .table-of-contents nav .next svg {
+    margin-right: 0.1rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  header {
+    padding: 1rem 2.5rem;
+  }
+  header nav ul li {
+    margin-right: 1.5rem;
+    font-size: 17px;
+  }
+  header nav ul li a:after {
+    top: 8px;
+    height: 1px;
+  }
+  #intro-section .title-wrapper {
+    padding: 0 2.5rem;
+  }
+  #intro-section h1 {
+    font-size: 90px;
+  }
+  #intro-section h2 {
+    font-size: 22px;
+  }
+  .logo-wrapper {
+    width: 64px;
+    height: 60px;
+  }
+  #magazine-image {
+    width: 450px;
+    height: 639px;
+  }
+  .explore span {
+    font-size: 18px;
+    margin-bottom: 0.4rem;
+  }
+  .explore svg {
+    width: 14px;
+  }
+  #inside-section {
+    padding: 1rem 2.5rem;
+  }
+  picture#magazine-inside {
+    max-width: 85%;
+  }
+  #inside-section .table-of-contents h2 {
+    font-size: 28px;
+    margin-bottom: 1.5rem;
+  }
+  #inside-section .table-of-contents ul li {
+    font-size: 18px;
+    margin-bottom: 0.5rem;
+  }
+  #inside-section .table-of-contents ul li .page-number {
+    font-size: 24px;
+    padding-left: 0.5rem;
+    line-height: 1;
+  }
+  #inside-section .table-of-contents ul li .author {
+    font-size: 13px;
+  }
+  #inside-section .table-of-contents nav {
+    margin-top: 1rem;
+  }
+  #inside-section .table-of-contents nav a {
+    font-size: 16px;
+  }
+  #inside-section .table-of-contents nav svg {
+    width: 18px;
+  }
+  #inside-section .table-of-contents nav .prev svg {
+    margin-left: 0.1rem;
+    margin-right: -6px;
+  }
+  #inside-section .table-of-contents nav .next {
+    margin-right: 1rem;
+  }
+  #inside-section .table-of-contents nav .next svg {
+    margin-right: 0.1rem;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  header {
+    padding: 1.5rem 1rem 1rem;
+  }
+  #intro-section .title-wrapper {
+    padding: 0 1rem;
+    margin-top: -25px;
+  }
+  header nav ul li a svg {
+    width: 10px;
+    margin-right: 4px;
+  }
+  header nav ul li {
+    margin-right: 1.25rem;
+    font-size: 14px;
+  }
+  #intro-section h1 {
+    font-size: 44px;
+  }
+  #intro-section h2 {
+    font-size: 13px;
+  }
+  #intro-section h2 span {
+    display: block;
+    font-weight: 700;
+  }
+  .logo-wrapper {
+    width: 50px;
+    height: 47px;
+  }
+  #magazine-image {
+    width: 330px;
+    height: 465px;
+  }
+  svg#rotate {
+    margin-top: 30px;
+    width: 26px;
+  }
+  .explore span {
+    font-size: 17px;
+    margin-bottom: 0.4rem;
+  }
+  .explore svg {
+    width: 13px;
+  }
+  #inside-section {
+    padding: 6rem 1rem;
+  }
+  #inside-section .table-of-contents h2 {
+    font-size: 22px;
+    margin-bottom: 1.5rem;
+  }
+  #inside-section .table-of-contents ul li {
+    font-size: 15px;
+    margin-bottom: 0.3rem;
+  }
+  #inside-section .table-of-contents ul li .page-number {
+    font-size: 18px;
+    padding-left: 0.5rem;
+    line-height: 1;
+  }
+  #inside-section .table-of-contents ul li .author {
+    font-size: 11px;
+  }
+  #inside-section .table-of-contents nav {
+    margin-top: 1rem;
+  }
+  #inside-section .table-of-contents nav a {
+    font-size: 13px;
+  }
+  #inside-section .table-of-contents nav svg {
+    width: 14px;
+  }
+  #inside-section .table-of-contents nav .prev svg {
+    margin-left: 0.1rem;
+    margin-right: -6px;
+  }
+  #inside-section .table-of-contents nav .next {
+    margin-right: 1rem;
+  }
+  #inside-section .table-of-contents nav .next svg {
+    margin-right: 0.1rem;
+  }
+  #order h3 {
+    font-size: 24px;
+  }
+  #order ul {
+    margin: 0.5rem 0 0;
+  }
+  #order ul li {
+    font-size: 20px;
+    margin-bottom: 0.8rem;
+  }
+  #order ul li svg {
+    width: 18px;
+    margin-top: -1px;
+    margin-right: 8px;
+  }
+  #order .close {
+    padding: 2rem;
+    margin-bottom: 0rem;
+    font-size: 20px;
+  }
+  #order .close svg {
+    width: 22px;
+    margin-left: 0.1rem;
+  }
+}
